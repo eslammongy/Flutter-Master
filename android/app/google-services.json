@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "437774384970",
+    "project_id": "flutter-master-ba98c",
+    "storage_bucket": "flutter-master-ba98c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437774384970:android:33ae1dd3767866eb358bb3",
+        "android_client_info": {
+          "package_name": "dev.eslammongy.flutter.master.flutter_master"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1nKlYh-zNzxrEb1sjsSZ37AsvJQ-kPH4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
