@@ -56,17 +56,11 @@ jobs:
       run: flutter pub get
     
     
-    - name: Create Firebase service account key file
-      env:
-        FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
-      run: |
-        echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > android/firebase-service-account.json
-    
     - name: Build and Distribute App
       env:
         FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
       run: |
-        bundle exec fastlane android firebase_distribution
+        bundle exec fastlane android firebase_distribution_builder
       working-directory: android
     
     - name: Clean up sensitive files
