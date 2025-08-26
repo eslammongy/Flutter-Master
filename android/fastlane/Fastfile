@@ -9,7 +9,7 @@ platform :android do
       release = firebase_app_distribution(
             app: "1:437774384970:android:33ae1dd3767866eb358bb3",
             testers: "mestereslam20@gmail.com",
-            firebase_cli_token:"1//03PqrevMqBmfOCgYIARAAGAMSNwF-L9IrHioEPvRKtXPjOXBNNilTYchn0awdqFBPw5JrFvyz4xMsW539bbVebgsc9ckUvfkRxc0",
+            firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
             android_artifact_path: "../build/app/outputs/apk/release/app-release.apk",
             android_artifact_type: "APK",
             release_notes: "Lots of amazing new features to test out!"
