@@ -1,0 +1,32 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Builds unsigned iOS IPA for testing"
+  lane :build_ipa_release do
+    UI.message("Starting Flutter clean...")
+    sh "flutter clean"
+    UI.message("Starting Flutter pub get...")
+    sh "flutter pub get"
+    UI.message("Building Flutter iOS release...")
+    sh "flutter build ios --release --no-codesign"
+
+    UI.message("Building unsigned iOS IPA file...")
+    build_ios_app(
+      scheme: "Runner",
+      configuration: "Release",
+      skip_codesigning: true,
+      export_method: "development",
+      silent: true,
+      clean: false,
+      output_directory: "build/fastlane/ipa",
+      output_name: "Runner_unsigned.ipa"
+    )
+    release = firebase_app_distribution(
+            app: "1:437774384970:android:33ae1dd3767866eb358bb3",
+            testers: "mestereslam20@gmail.com",
+            firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+            ipa_path: "build/fastlane/ipa/Runner_unsigned.ipa",
+            release_notes: "Built from GitHub Actions"
+      )
+  end
+end
