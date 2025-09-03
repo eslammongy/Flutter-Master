@@ -2,7 +2,7 @@ default_platform(:android)
 
 platform :android do
   desc "Run command to automate build and distribute flutter apk"
-  lane :firebase_distribution_builder do
+  lane :android_firebase_distribution_builder do
       sh "flutter clean"
       sh "flutter pub get"
       sh "flutter build apk --release --no-tree-shake-icons"

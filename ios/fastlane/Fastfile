@@ -2,7 +2,7 @@ default_platform(:ios)
 
 platform :ios do
   desc "Builds unsigned iOS IPA for testing"
-  lane :build_ipa_release do
+  lane :ios_firebase_distribution_builder do
     UI.message("Starting Flutter clean...")
     sh "flutter clean"
     UI.message("Starting Flutter pub get...")
