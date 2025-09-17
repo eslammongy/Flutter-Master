@@ -32,13 +32,26 @@ jobs:
           bundler-cache: true
           working-directory: ios
 
-      # Fix CocoaPods installation issue
-      - name: Reinstall CocoaPods
+      # Fix Gemfile.lock platforms for macOS ARM
+      - name: Fix Gemfile.lock platforms
+        working-directory: ios
         run: |
-          sudo gem uninstall cocoapods cocoapods-core cocoapods-downloader --ignore-dependencies --all || true
-          sudo gem install cocoapods
-          pod --version
-        continue-on-error: true
+          bundle lock --add-platform arm64-darwin-22
+          bundle lock --add-platform x86_64-darwin-22
+          bundle lock --add-platform ruby
+
+      # CocoaPods cache
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Install CocoaPods
+        working-directory: ios
+        run: pod install --repo-update
 
       - name: Get Flutter dependencies
         run: flutter pub get
@@ -51,8 +64,7 @@ jobs:
 
       - name: Clean up sensitive files
         if: always()
-        run: |
-          rm -f ios/firebase-service-account.json
+        run: rm -f ios/firebase-service-account.json
 
       - name: Upload build artifacts
         if: failure()
