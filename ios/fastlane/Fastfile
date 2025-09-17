@@ -3,6 +3,15 @@ default_platform(:ios)
 platform :ios do
   desc "Builds unsigned iOS IPA for testing"
   lane :ios_firebase_distribution_builder do
+
+     # Install/Update CocoaPods dependencies
+    UI.message("Installing CocoaPods dependencies...")
+    cocoapods(
+        clean_install: true,
+        repo_update: true,
+        silent: false
+    )
+
     UI.message("Starting Flutter clean...")
     sh "flutter clean"
     UI.message("Starting Flutter pub get...")
@@ -22,7 +31,7 @@ platform :ios do
       output_name: "Runner_unsigned.ipa"
     )
     release = firebase_app_distribution(
-            app: "1:437774384970:android:33ae1dd3767866eb358bb3",
+            app: "1:437774384970:ios:46b05d0f57e7c5c2358bb3",
             testers: "mestereslam20@gmail.com",
             firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
             ipa_path: "build/fastlane/ipa/Runner_unsigned.ipa",

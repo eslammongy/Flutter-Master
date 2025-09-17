@@ -29,16 +29,16 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.2.3"
-          bundler-cache: false
+          bundler-cache: true
           working-directory: ios
 
-      - name: Add current platform to Gemfile.lock
-        run: bundle lock --add-platform arm64-darwin-22
-        working-directory: ios
-
-      - name: Install gems
-        run: bundle install
-        working-directory: ios
+      # Fix CocoaPods installation issue
+      - name: Reinstall CocoaPods
+        run: |
+          sudo gem uninstall cocoapods cocoapods-core cocoapods-downloader --ignore-dependencies --all || true
+          sudo gem install cocoapods
+          pod --version
+        continue-on-error: true
 
       - name: Get Flutter dependencies
         run: flutter pub get
@@ -58,8 +58,9 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: build-logs
+          name: ios-build-logs
           path: |
             ios/fastlane/report.xml
-            ios/build/outputs/
+            ios/build/fastlane/ipa/
+            ios/fastlane/logs/
           retention-days: 7
