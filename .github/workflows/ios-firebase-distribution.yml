@@ -25,14 +25,15 @@ jobs:
           cache: true
           cache-key: flutter-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
 
+      # Setup Ruby but skip bundler-cache auto install
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.2.3"
-          bundler-cache: true
+          bundler-cache: false
           working-directory: ios
 
-      # Fix Gemfile.lock platforms for macOS ARM
+      # Patch Gemfile.lock before bundler runs
       - name: Fix Gemfile.lock platforms
         working-directory: ios
         run: |
@@ -40,7 +41,11 @@ jobs:
           bundle lock --add-platform x86_64-darwin-22
           bundle lock --add-platform ruby
 
-      # CocoaPods cache
+      - name: Bundle install
+        working-directory: ios
+        run: bundle install --jobs 4
+
+      # Cache CocoaPods
       - name: Cache CocoaPods
         uses: actions/cache@v4
         with:
